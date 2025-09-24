@@ -7,7 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Brain, Target, Zap, Calendar, TrendingUp, Users, Award, Settings } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getStorage } from '@/lib/storage';
-import { seedExercises } from '@/data/seedData';
+import { useUserWorkouts } from '@/hooks/useUserWorkouts';
+import { useNavigate } from 'react-router-dom';
 
 interface WorkoutSuggestion {
   id: string;
@@ -27,6 +28,8 @@ interface WorkoutSuggestion {
 
 export function IntelligentWorkoutPlanner() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { startWorkout, getQuickTemplates } = useUserWorkouts();
   const [suggestions, setSuggestions] = useState<WorkoutSuggestion[]>([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState<WorkoutSuggestion | null>(null);
   const [userPreferences, setUserPreferences] = useState({
@@ -125,20 +128,26 @@ export function IntelligentWorkoutPlanner() {
   const handleStartWorkout = (suggestion: WorkoutSuggestion) => {
     const workout = {
       id: `ai-${suggestion.id}-${Date.now()}`,
-      date: new Date().toISOString().split('T')[0],
+      name: suggestion.name,
       focus: suggestion.focus,
       exercises: suggestion.exercises.map(ex => ({
         name: ex.name,
         sets: ex.sets,
         reps: ex.reps,
-        rest_s: ex.rest,
-        weight: 0
+        rest: ex.rest,
+        weight: 0,
+        rpe: 7
       }))
     };
-    
-    // Store workout and start
-    localStorage.setItem('active_workout_plan', JSON.stringify({ plan: { nome: suggestion.name, foco: suggestion.focus }, exercises: workout.exercises }));
-    window.location.href = '/dashboard';
+
+    const workoutToStart = startWorkout(workout);
+
+    if (!workoutToStart.exercises.length) {
+      const fallback = getQuickTemplates()[0];
+      startWorkout(fallback);
+    }
+
+    navigate('/treinos');
   };
 
   return (

@@ -139,6 +139,64 @@ export function useUserWorkouts() {
     return false;
   };
 
+  const normalizeWorkoutData = (workout: Partial<UserWorkoutData>): UserWorkoutData => {
+    const id = workout.id || `workout_${Date.now()}`;
+    const focus = workout.focus || workout.name || 'Treino';
+    const name = workout.name || focus || 'Treino';
+
+    const normalizedExercises = (workout.exercises || []).map((exercise, index) => {
+      const repsValue =
+        exercise.reps ??
+        (exercise as any).reps_target ??
+        (exercise as any).repsTarget ??
+        (exercise as any).repsSuggested ??
+        '10';
+
+      const setsValue =
+        exercise.sets ??
+        (exercise as any).series ??
+        (exercise as any).set_count ??
+        3;
+
+      const restValue =
+        exercise.rest ??
+        (exercise as any).rest_s ??
+        (exercise as any).restSeconds ??
+        (exercise as any).restSeg ??
+        90;
+
+      const weightValue =
+        typeof exercise.weight === 'number'
+          ? exercise.weight
+          : typeof (exercise as any).pesoInicial === 'number'
+            ? (exercise as any).pesoInicial
+            : typeof (exercise as any).weight_suggestion === 'number'
+              ? (exercise as any).weight_suggestion
+              : 0;
+
+      return {
+        name: exercise.name || (exercise as any).nome || `Exercício ${index + 1}`,
+        sets: setsValue,
+        reps: repsValue,
+        weight: weightValue,
+        rpe: typeof exercise.rpe === 'number' ? exercise.rpe : 7,
+        notes: exercise.notes || (exercise as any).notes || '',
+        rest: restValue
+      };
+    });
+
+    return {
+      id,
+      name,
+      focus,
+      exercises: normalizedExercises,
+      created_at: workout.created_at,
+      completed_at: workout.completed_at,
+      is_template: workout.is_template ?? false,
+      description: workout.description
+    };
+  };
+
   // Save template
   const saveTemplate = async (templateData: Omit<UserWorkoutData, 'id'>) => {
     if (!user) {
@@ -188,9 +246,11 @@ export function useUserWorkouts() {
   };
 
   // Start workout
-  const startWorkout = (workout: UserWorkoutData) => {
-    setActiveWorkout(workout);
-    toast.success(`🔥 Iniciando ${workout.name}!`);
+  const startWorkout = (workout: Partial<UserWorkoutData>) => {
+    const normalizedWorkout = normalizeWorkoutData(workout);
+    setActiveWorkout(normalizedWorkout);
+    toast.success(`🔥 Iniciando ${normalizedWorkout.name}!`);
+    return normalizedWorkout;
   };
 
   // Complete workout

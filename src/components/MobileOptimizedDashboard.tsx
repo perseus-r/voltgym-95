@@ -8,23 +8,52 @@ import { QuickActions } from '@/components/QuickActions';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  Activity, 
-  Target, 
-  Flame, 
-  TrendingUp, 
+import {
+  Activity,
+  Target,
+  Flame,
+  TrendingUp,
   Calendar,
   Play,
   Plus,
   BarChart3
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useUserWorkouts } from '@/hooks/useUserWorkouts';
+import { useNavigate } from 'react-router-dom';
 
 export const MobileOptimizedDashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { startWorkout, getTodayWorkout, getQuickTemplates } = useUserWorkouts();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [recentWorkouts, setRecentWorkouts] = useState([]);
+
+  const todayWorkout = getTodayWorkout();
+  const quickTemplates = getQuickTemplates();
+  const defaultWorkout = todayWorkout || quickTemplates[0];
+
+  const heroWorkout = defaultWorkout
+    ? {
+        exercises: defaultWorkout.exercises.map((exercise, index) => ({
+          name: exercise.name || `Exercício ${index + 1}`,
+          sets: exercise.sets ?? 3,
+          reps: typeof exercise.reps === 'string' ? exercise.reps : `${exercise.reps ?? 10}`,
+          rest_s: exercise.rest ?? 90
+        }))
+      }
+    : undefined;
+
+  const handleStartWorkout = () => {
+    if (!defaultWorkout) {
+      toast.info('Nenhum treino disponível no momento');
+      return;
+    }
+
+    startWorkout(defaultWorkout);
+    navigate('/treinos');
+  };
 
   useEffect(() => {
     loadDashboardData();
@@ -119,9 +148,11 @@ export const MobileOptimizedDashboard = () => {
 
         {/* Hero Workout - Mobile optimized */}
         <div className="mb-6">
-          <HeroNextWorkout onStart={() => {
-            toast.success(`🔥 Treino iniciado!`);
-          }} />
+          <HeroNextWorkout
+            focus={defaultWorkout?.name || defaultWorkout?.focus || 'Seu próximo treino'}
+            workout={heroWorkout}
+            onStart={handleStartWorkout}
+          />
         </div>
 
         {/* Progress Section - Mobile layout */}
@@ -190,9 +221,7 @@ export const MobileOptimizedDashboard = () => {
         {/* Quick Actions - Mobile optimized */}
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-txt mb-4">Ações Rápidas</h2>
-          <QuickActions onStartWorkout={() => {
-            toast.success(`🔥 Treino iniciado!`);
-          }} />
+          <QuickActions onStartWorkout={handleStartWorkout} />
         </div>
 
         {/* Motivation Card - Mobile */}

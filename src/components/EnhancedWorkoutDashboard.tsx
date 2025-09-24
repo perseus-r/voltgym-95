@@ -179,12 +179,14 @@ export function EnhancedWorkoutDashboard({ onStartWorkout, onCreateWorkout }: En
       name: template.name,
       focus: template.focus,
       duration_minutes: template.duration_minutes,
-      exercises: Array.from({length: template.exercises_count}, (_, i) => ({
-        id: `ex-${template.id}-${i}`,
+      exercises: Array.from({ length: template.exercises_count }, (_, i) => ({
         name: `Exercício ${i + 1}`,
         sets: 3,
-        reps_target: '8-12',
-        completed: false
+        reps: '8-12',
+        rest: 90,
+        weight: 0,
+        rpe: 7,
+        notes: ''
       }))
     };
     onStartWorkout(workoutData);
