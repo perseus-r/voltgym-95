@@ -185,7 +185,7 @@ const EnhancedAuth = () => {
                 variant="primary"
                 className="w-full py-4 text-lg font-semibold"
                 disabled={loading}
-                onClick={() => {}}
+                type="submit"
               >
                 {loading ? (
                   <div className="flex items-center gap-3">

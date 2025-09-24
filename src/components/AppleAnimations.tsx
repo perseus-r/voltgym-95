@@ -39,7 +39,8 @@ export const AppleButton: React.FC<{
   variant?: 'primary' | 'secondary' | 'glass';
   className?: string;
   disabled?: boolean;
-}> = ({ children, onClick, variant = 'primary', className = '', disabled = false }) => {
+  type?: 'button' | 'submit' | 'reset';
+}> = ({ children, onClick, variant = 'primary', className = '', disabled = false, type = 'button' }) => {
   const [isPressed, setIsPressed] = useState(false);
   
   const baseClasses = {
@@ -50,6 +51,7 @@ export const AppleButton: React.FC<{
 
   return (
     <motion.button
+      type={type}
       className={`
         relative overflow-hidden rounded-xl px-6 py-3 font-medium
         transition-all duration-200 ease-out
