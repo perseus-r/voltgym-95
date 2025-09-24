@@ -69,6 +69,7 @@ const TreinosPage = () => {
   const handleSavedWorkoutStart = (workout: any) => {
     console.log('▶️ Starting saved workout:', workout.name);
     startWorkout(workout);
+    setShowSavedWorkouts(false);
   };
 
   if (loading) {

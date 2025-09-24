@@ -90,14 +90,16 @@ export function WeeklyWorkoutSchedule({ onStartWorkout }: WeeklyWorkoutScheduleP
 
     const workout = {
       id: `${plan.id}-${dayKey}-${Date.now()}`,
+      name: plan.nome,
       focus: plan.foco,
       day: DAYS_OF_WEEK.find(d => d.key === dayKey)?.label,
-      exercises: planExs.map((pe: any) => ({
-        name: pe.exercise?.nome || pe.exerciseName || "Exercício",
-        sets: pe.series || 3,
-        reps: pe.reps || "8-10",
-        rest_s: pe.restSeg || 90,
-        id: pe.exerciseId
+      exercises: planExs.map((pe: any, index: number) => ({
+        name: pe.exercise?.nome || pe.exerciseName || `Exercício ${index + 1}`,
+        sets: pe.series ?? 3,
+        reps: pe.reps || '8-10',
+        rest: pe.restSeg ?? pe.restSeconds ?? 90,
+        weight: typeof pe.pesoInicial === 'number' ? pe.pesoInicial : 0,
+        notes: pe.notes || ''
       }))
     };
 
