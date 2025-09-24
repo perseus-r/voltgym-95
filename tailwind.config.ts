@@ -121,6 +121,11 @@ export default {
         'premium-bounce': 'premium-bounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         'glass-fade': 'glass-fade 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         'energy-pulse': 'energy-pulse 3s ease-in-out infinite',
+        'apple-fade-in': 'appleFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+        'apple-slide-up': 'appleSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+        'apple-bounce': 'appleBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
+        'apple-spring': 'appleSpring 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        'haptic-feedback': 'hapticFeedback 0.15s ease-out',
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
@@ -178,6 +183,67 @@ export default {
           to: {
             height: "0",
           },
+        },
+        'appleFadeIn': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(20px) scale(0.95)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0) scale(1)'
+          }
+        },
+        'appleSlideUp': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(30px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        'appleBounce': {
+          '0%': {
+            opacity: '0',
+            transform: 'scale(0.3)'
+          },
+          '50%': {
+            transform: 'scale(1.05)'
+          },
+          '70%': {
+            transform: 'scale(0.9)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'scale(1)'
+          }
+        },
+        'appleSpring': {
+          '0%': {
+            transform: 'scale(0.95)',
+            opacity: '0'
+          },
+          '60%': {
+            transform: 'scale(1.02)',
+            opacity: '1'
+          },
+          '100%': {
+            transform: 'scale(1)',
+            opacity: '1'
+          }
+        },
+        'hapticFeedback': {
+          '0%': {
+            transform: 'scale(1)'
+          },
+          '50%': {
+            transform: 'scale(0.98)'
+          },
+          '100%': {
+            transform: 'scale(1)'
+          }
         },
       },
       transitionTimingFunction: {

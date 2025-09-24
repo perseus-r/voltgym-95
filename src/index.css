@@ -50,11 +50,13 @@
   --glass-bg: rgba(255, 255, 255, 0.06);
   --glass-border: rgba(255, 255, 255, 0.10);
   
-  /* Premium animations - Timing de raio elétrico */
+  /* Premium animations - Timing de raio elétrico + Apple-style */
   --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --transition-lightning: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-apple: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-elastic: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
   /* shadcn/ui variables - Raio Elétrico Theme */
   --background: 0 0% 0%;
@@ -1153,4 +1155,157 @@ button:focus-visible,
     transform: scale(0.98);
     transition: transform 0.1s ease;
   }
+}
+
+/* Apple-style animations and components */
+.apple-smooth {
+  transition: var(--transition-apple);
+}
+
+.apple-elastic {
+  transition: var(--transition-elastic);
+}
+
+.apple-hover:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.apple-press:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+.apple-fade-in {
+  animation: appleFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes appleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.apple-slide-up {
+  animation: appleSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes appleSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.apple-bounce {
+  animation: appleBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes appleBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.apple-glass {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.apple-glass:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Enhanced glass morphism for cards */
+.glass-card {
+  backdrop-filter: blur(var(--blur));
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow);
+  transition: var(--transition-apple);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Volt button with Apple-style feedback */
+.volt-button {
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: var(--radius);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: var(--transition-apple);
+  position: relative;
+  overflow: hidden;
+}
+
+.volt-button:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 
+    0 8px 25px rgba(55, 160, 244, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.volt-button:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+.volt-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.volt-button:hover::before {
+  left: 100%;
+}
+
+/* Apple-style focus states */
+.apple-focus:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 2px rgba(55, 160, 244, 0.3),
+    0 0 0 4px rgba(55, 160, 244, 0.1);
+  transform: scale(1.01);
 }
