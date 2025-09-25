@@ -354,8 +354,8 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in workout-templates function:', error);
     return new Response(JSON.stringify({ 
-      error: error.message || 'Erro interno do servidor',
-      details: error.toString()
+      error: error instanceof Error ? error.message : 'Erro interno do servidor',
+      details: error instanceof Error ? error.toString() : String(error)
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
