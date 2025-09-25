@@ -181,6 +181,8 @@ Como posso te ajudar hoje?`,
         imageBase64 = selectedImage.split(',')[1]; // Remove data:image/jpeg;base64, prefix
       }
 
+      console.log('🤖 Calling nutrition AI with:', { message, analysisType, hasImage: !!imageBase64 });
+      
       const { data, error } = await supabase.functions.invoke('nutrition-ai-chat', {
         body: {
           message: message,
