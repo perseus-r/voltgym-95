@@ -192,7 +192,12 @@ Como posso te ajudar hoje?`,
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Nutrition AI error:', error);
+        toast.error('Não foi possível contatar a IA de nutrição. Tente novamente em instantes.');
+        setIsTyping(false);
+        return;
+      }
 
       if (data.success) {
         const aiMessage: Message = {
