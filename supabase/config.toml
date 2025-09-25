@@ -28,7 +28,7 @@ verify_jwt = false
 verify_jwt = true
 
 [functions.nutrition-ai-chat]
-verify_jwt = false
+verify_jwt = true
 
 [db]
 enabled = true

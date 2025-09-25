@@ -192,12 +192,7 @@ Como posso te ajudar hoje?`,
         }
       });
 
-      if (error) {
-        console.error('❌ Nutrition AI error:', error);
-        toast.error('Não foi possível contatar a IA de nutrição. Tente novamente em instantes.');
-        setIsTyping(false);
-        return;
-      }
+      if (error) throw error;
 
       if (data.success) {
         const aiMessage: Message = {
@@ -226,14 +221,7 @@ Como posso te ajudar hoje?`,
           toast.success('Análise da refeição concluída!');
         }
       } else {
-        const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: data.error || 'A IA não pôde responder agora. Tente novamente em instantes.',
-          isAI: true,
-          timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-        };
-        setMessages(prev => [...prev, aiMessage]);
-        toast.error(data.error || 'Falha ao obter resposta da IA');
+        throw new Error(data.error || 'Erro na resposta da IA');
       }
 
     } catch (error) {
