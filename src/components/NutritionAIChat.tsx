@@ -226,7 +226,14 @@ Como posso te ajudar hoje?`,
           toast.success('Análise da refeição concluída!');
         }
       } else {
-        throw new Error(data.error || 'Erro na resposta da IA');
+        const aiMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: data.error || 'A IA não pôde responder agora. Tente novamente em instantes.',
+          isAI: true,
+          timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+        };
+        setMessages(prev => [...prev, aiMessage]);
+        toast.error(data.error || 'Falha ao obter resposta da IA');
       }
 
     } catch (error) {

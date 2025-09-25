@@ -172,7 +172,7 @@ serve(async (req) => {
       error: error instanceof Error ? error.message : 'Unknown error',
       success: false
     }), {
-      status: 500,
+      status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
