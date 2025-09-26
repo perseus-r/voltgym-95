@@ -163,15 +163,7 @@ Como posso te ajudar hoje?`,
 
       try {
         // Salvar mensagem do usuário na conversa
-        if (conversationId) {
-          await supabase
-            .from('ai_messages')
-            .insert({
-              conversation_id: conversationId,
-              role: 'user',
-              content: message || 'Análise de foto de refeição'
-            });
-        }
+        // Persistência moved to edge function; no client-side insert
 
         const analysisType = selectedImage ? 'photo_analysis' : 'chat';
       
@@ -226,14 +218,15 @@ Como posso te ajudar hoje?`,
 
     } catch (error) {
       console.error('Error sending message:', error);
+      const friendly = error instanceof Error ? error.message : 'Desculpe, ocorreu um erro. Tente novamente.';
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'Desculpe, ocorreu um erro. Tente novamente.',
+        text: friendly,
         isAI: true,
         timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
       };
       setMessages(prev => [...prev, errorMessage]);
-      toast.error('Erro ao enviar mensagem. Tente novamente.');
+      toast.error(friendly);
     } finally {
       setSelectedImage(null);
       setIsTyping(false);

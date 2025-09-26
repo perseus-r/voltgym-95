@@ -9,7 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { toast } from 'sonner';
 import { ImprovedWorkoutSession } from './ImprovedWorkoutSession';
 import { useWorkoutCreator } from '@/hooks/useWorkoutCreator';
-
+import { CustomWorkoutBuilder } from '@/components/CustomWorkoutBuilder';
+import WeekScheduleDialog from '@/components/WeekScheduleDialog';
 interface Workout {
   id: string;
   name: string;
@@ -33,8 +34,8 @@ export function WorkoutSessionController({ className = '' }: WorkoutSessionContr
   const [activeWorkout, setActiveWorkout] = useState<Workout | null>(null);
   const [sessionDialogOpen, setSessionDialogOpen] = useState(false);
   const [selectedWorkouts, setSelectedWorkouts] = useState<string[]>([]);
-  
-  const { templates, loadTemplates, deleteTemplate, getQuickWorkoutTemplates } = useWorkoutCreator();
+  const [customDialogOpen, setCustomDialogOpen] = useState(false);
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
 
   React.useEffect(() => {
     loadTemplates();
@@ -146,6 +147,13 @@ export function WorkoutSessionController({ className = '' }: WorkoutSessionContr
           </div>
           
           <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCustomDialogOpen(true)}
+            >
+              Criar Treino
+            </Button>
             {selectedWorkouts.length > 0 && (
               <>
                 <Button
@@ -162,6 +170,13 @@ export function WorkoutSessionController({ className = '' }: WorkoutSessionContr
                   className="text-red-500 hover:text-red-400"
                 >
                   Excluir ({selectedWorkouts.length})
+                </Button>
+                <Button
+                  size="sm"
+                  variant="default"
+                  onClick={() => setScheduleDialogOpen(true)}
+                >
+                  Agendar na Semana
                 </Button>
                 {selectedWorkouts.length >= 2 && (
                   <Button
@@ -298,6 +313,39 @@ export function WorkoutSessionController({ className = '' }: WorkoutSessionContr
           </p>
         </Card>
       )}
+      {/* Dialogs */}
+      <CustomWorkoutBuilder
+        isOpen={customDialogOpen}
+        onClose={() => setCustomDialogOpen(false)}
+        onSave={(workoutData: any) => {
+          try {
+            const newTemplate = {
+              id: `custom-${Date.now()}`,
+              name: workoutData.name,
+              focus: workoutData.focus,
+              exercises: workoutData.exercises.map((ex: any) => ({
+                name: ex.name,
+                sets: ex.sets || 3,
+                reps: ex.reps || '8-12',
+                rest_s: ex.rest || 90,
+                weight: ex.weight || 0
+              }))
+            };
+            const saved = JSON.parse(localStorage.getItem('workout_templates') || '[]');
+            saved.push(newTemplate);
+            localStorage.setItem('workout_templates', JSON.stringify(saved));
+            loadTemplates();
+            toast.success(`Treino "${workoutData.name}" criado!`);
+          } catch (e) {
+            toast.error('Erro ao salvar treino');
+          }
+        }}
+      />
+      <WeekScheduleDialog
+        open={scheduleDialogOpen}
+        onOpenChange={setScheduleDialogOpen}
+        selectedWorkoutIds={selectedWorkouts}
+      />
     </div>
   );
 }

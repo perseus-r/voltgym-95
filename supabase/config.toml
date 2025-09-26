@@ -28,7 +28,7 @@ verify_jwt = false
 verify_jwt = true
 
 [functions.nutrition-ai-chat]
-verify_jwt = true
+verify_jwt = false
 
 [db]
 enabled = true
@@ -40,7 +40,7 @@ major_version = 15
 verify_jwt = true
 
 [functions.ai-coach]  
-verify_jwt = true
+verify_jwt = false
 
 [functions.auth-email-config]
 verify_jwt = false

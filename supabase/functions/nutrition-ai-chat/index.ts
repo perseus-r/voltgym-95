@@ -120,7 +120,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
+        model: 'gpt-4o-mini',
         messages: openaiMessages,
         max_tokens: 1000,
         temperature: 0.7,
@@ -172,7 +172,7 @@ serve(async (req) => {
       error: error instanceof Error ? error.message : 'Unknown error',
       success: false
     }), {
-      status: 500,
+      status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
