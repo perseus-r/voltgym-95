@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { ImprovedWorkoutSession } from './ImprovedWorkoutSession';
+import { AdvancedWorkoutSession } from './AdvancedWorkoutSession';
 import { useWorkoutCreator } from '@/hooks/useWorkoutCreator';
 import { CustomWorkoutBuilder } from '@/components/CustomWorkoutBuilder';
 import WeekScheduleDialog from '@/components/WeekScheduleDialog';
@@ -120,18 +120,21 @@ export function WorkoutSessionController({ className = '' }: WorkoutSessionContr
 
   if (activeWorkout && sessionDialogOpen) {
     return (
-      <Dialog open={sessionDialogOpen} onOpenChange={setSessionDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Sessão de Treino</DialogTitle>
-          </DialogHeader>
-          <ImprovedWorkoutSession 
-            workout={activeWorkout}
-            onComplete={handleWorkoutComplete}
-            onClose={() => setSessionDialogOpen(false)}
-          />
-        </DialogContent>
-      </Dialog>
+      <AdvancedWorkoutSession 
+        workout={{
+          id: activeWorkout.id,
+          focus: activeWorkout.focus,
+          exercises: activeWorkout.exercises.map(ex => ({
+            name: ex.name,
+            sets: ex.sets,
+            reps: ex.reps,
+            rest_s: ex.rest_s,
+            weight: ex.weight
+          }))
+        }}
+        onComplete={handleWorkoutComplete}
+        onClose={() => setSessionDialogOpen(false)}
+      />
     );
   }
 
