@@ -36,6 +36,8 @@ export function WorkoutSessionController({ className = '' }: WorkoutSessionContr
   const [selectedWorkouts, setSelectedWorkouts] = useState<string[]>([]);
   const [customDialogOpen, setCustomDialogOpen] = useState(false);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+  
+  const { templates, loadTemplates, deleteTemplate, getQuickWorkoutTemplates } = useWorkoutCreator();
 
   React.useEffect(() => {
     loadTemplates();
