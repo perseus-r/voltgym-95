@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 import SalesHero from '@/components/sections/SalesHero';
 import SalesFeatures from '@/components/sections/SalesFeatures';
+import SalesTestimonials from '@/components/sections/SalesTestimonials';
 import SalesPricing from '@/components/sections/SalesPricing';
 import Footer from '@/components/Footer';
 
@@ -17,6 +18,7 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-main text-txt">
       <SalesHero />
       <SalesFeatures />
+      <SalesTestimonials />
       <SalesPricing />
       <Footer />
       <Toaster />
