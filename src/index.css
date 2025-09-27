@@ -284,6 +284,57 @@ body {
   overflow: hidden;
 }
 
+/* Sales page animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Premium button animations */
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-cta:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.05);
+}
+
+.btn-cta svg {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-cta:hover svg {
+  transform: translateX(2px);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .btn-cta,
+  .btn-cta svg {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 /* Improved glass card with better mobile support */
 .glass-card {
   background: rgba(17, 24, 49, 0.8);
